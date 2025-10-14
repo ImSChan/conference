@@ -37,7 +37,7 @@ CURRENT_DIR = os.path.dirname(__file__)
 ROOMS_PATH = os.path.join(CURRENT_DIR, "rooms.json")
 RESV_PATH  = os.path.join(CURRENT_DIR, "reservations.json")
 
-_db_lock = threading.Lock()
+# _db_lock = threading.Lock()
 
 def load_rooms() -> List[Dict[str,Any]]:
     if not os.path.exists(ROOMS_PATH):
@@ -51,16 +51,16 @@ def load_reservations() -> List[Dict[str,Any]]:
     with open(RESV_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
 
-def save_reservations(resv: List[Dict[str,Any]]) -> Optional[str]:
-    """성공 시 None, 실패 시 에러 메시지 문자열 반환"""
-    try:
-        with _db_lock:
-            with open(RESV_PATH, "w", encoding="utf-8") as f:
-                json.dump(resv, f, ensure_ascii=False, indent=2)
-        return None
-    except Exception as e:
-        log.warning("save_reservations failed: %s", e)
-        return f"⚠️ 예약 저장에 실패했습니다: {e}"
+# def save_reservations(resv: List[Dict[str,Any]]) -> Optional[str]:
+#     """성공 시 None, 실패 시 에러 메시지 문자열 반환"""
+#     try:
+#         with _db_lock:
+#             with open(RESV_PATH, "w", encoding="utf-8") as f:
+#                 json.dump(resv, f, ensure_ascii=False, indent=2)
+#         return None
+#     except Exception as e:
+#         log.warning("save_reservations failed: %s", e)
+#         return f"⚠️ 예약 저장에 실패했습니다: {e}"
 
 # ---------- Dooray helpers ----------
 def parse_payload(req: Request, data: Dict[str,Any]) -> Dict[str,Any]:
@@ -122,10 +122,10 @@ def parse_natural(text: str) -> Dict[str,Any]:
 다음 한국어 문장에서 회의실 예약 의도를 추출해 JSON으로 줘.
 - 키: floor(정수 또는 null), room_name(문자열 또는 null), start("HH:MM" 또는 null), end("HH:MM" 또는 null), title(문자열)
 문장: "{text}"
-JSON만 반환.
+JSON만 반환.(코드블록으로 주지말고.)
 """
             r = client.chat.completions.create(
-                model="gpt-4o-mini",
+                model="gpt-4o",
                 messages=[{"role":"user","content":prompt}],
                 temperature=0.2,
             )
@@ -310,11 +310,11 @@ async def meeting_actions(req: Request):
             "title": title,
             "reservedBy": user_id
         }
-        resv = load_reservations()
-        resv.append(new_rec)
-        err = save_reservations(resv)
-        if err:
-            return resp(msg(err, response_type="ephemeral"))
+        # resv = load_reservations()
+        # resv.append(new_rec)
+        # err = save_reservations(resv)
+        # if err:
+        #     return resp(msg(err, response_type="ephemeral"))
 
         status = parse_status(original) or {}
         key = f'{rooms.get(room_id,{}).get("name",room_id)} {start}~{end}'

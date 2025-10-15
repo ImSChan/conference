@@ -135,6 +135,7 @@ JSON만 반환.(코드블록으로 주지말고.)
             out["end"]   = out["end"] or j.get("end")
             if j.get("room_name"): out["room_hint"] = j["room_name"]
             out["title"] = out["title"] or j.get("title")
+            log.info(out)
         except Exception as e:
             log.warning("OpenAI refine skipped: %s", e)
 

@@ -372,11 +372,12 @@ async def ai_test(req: Request):
 
     r = client.chat.completions.create(
                 model="gpt-4o",
-                messages=[{"role":"user","content":prompt}],
-                temperature=0.2,
+                messages=[{"role":"user","content":text}],
+                temperature=0.3,
     )
     return resp(
         {
+            "responseType": "ephemeral",
             "text": r
         }
     )

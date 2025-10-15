@@ -40,10 +40,14 @@ RESV_PATH  = os.path.join(CURRENT_DIR, "reservations.json")
 # _db_lock = threading.Lock()
 
 def load_rooms() -> List[Dict[str,Any]]:
-    if not os.path.exists(ROOMS_PATH):
-        raise FileNotFoundError("rooms.json not found next to index.py")
-    with open(ROOMS_PATH, "r", encoding="utf-8") as f:
-        return json.load(f)
+    return [
+  { "id": "R301", "name": "3층 대회의실", "floor": 3, "capacity": 12 },
+  { "id": "R302", "name": "3층 소회의실 A", "floor": 3, "capacity": 6 },
+  { "id": "R303", "name": "3층 소회의실 B", "floor": 3, "capacity": 6 },
+  { "id": "R401", "name": "4층 라운지룸", "floor": 4, "capacity": 8 },
+  { "id": "R402", "name": "4층 세미나룸", "floor": 4, "capacity": 20 }
+    ]
+
 
 def load_reservations() -> List[Dict[str,Any]]:
     if not os.path.exists(RESV_PATH):

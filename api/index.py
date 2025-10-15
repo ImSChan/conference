@@ -370,7 +370,7 @@ async def gpt_api_test(req: Request):
 
     r = client.chat.completions.create(
             model="gpt-4o",
-            messages=[{"role":"user","content":text}],
+            messages=[{"role":"user","content":data}],
     )
     return resp(
         {

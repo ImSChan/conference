@@ -353,3 +353,30 @@ async def meeting_actions(req: Request):
         })
 
     return resp({})
+
+
+# ---------- TEST ----------
+@app.post("/dooray/meeting/test")
+async def ai_test(req: Request):
+    raw = (await req.body()).decode("utf-8","ignore")
+    log.info("[IN] /meeting/command RAW=%s", raw[:1200])
+
+    try:
+        data = await req.json()
+    except Exception:
+        form = await req.form()
+        data = json.loads(form["payload"]) if "payload" in form else {k:v for k,v in form.items()}
+    data = parse_payload(req, data)
+
+    text = (data.get("text") or "").strip()
+
+    r = client.chat.completions.create(
+                model="gpt-4o",
+                messages=[{"role":"user","content":prompt}],
+                temperature=0.2,
+    )
+    return resp(
+        {
+            "text": r
+        }
+    )

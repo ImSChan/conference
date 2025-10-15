@@ -378,6 +378,6 @@ async def ai_test(req: Request):
     return resp(
         {
             "responseType": "ephemeral",
-            "text": r
+            "text": r.choices[0].message.content
         }
     )

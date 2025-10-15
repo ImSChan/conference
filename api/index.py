@@ -368,9 +368,10 @@ async def gpt_api_test(req: Request):
         data = json.loads(form["payload"]) if "payload" in form else {k:v for k,v in form.items()}
     data = parse_payload(req, data)
 
+    text = (data.get("text") or "").strip()
     r = client.chat.completions.create(
             model="gpt-4o",
-            messages=[{"role":"user","content":data}],
+            messages=[{"role":"user","content":text}],
     )
     return resp(
         {

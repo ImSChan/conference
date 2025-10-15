@@ -354,3 +354,27 @@ async def meeting_actions(req: Request):
 
     return resp({})
 
+
+# ---------- COMMAND ----------
+@app.post("/dooray/meeting/test")
+async def gpt_api_test(req: Request):
+    raw = (await req.body()).decode("utf-8","ignore")
+    log.info("[IN] /meeting/command RAW=%s", raw[:1200])
+
+    try:
+        data = await req.json()
+    except Exception:
+        form = await req.form()
+        data = json.loads(form["payload"]) if "payload" in form else {k:v for k,v in form.items()}
+    data = parse_payload(req, data)
+
+    r = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[{"role":"user","content":text}],
+    )
+    return resp(
+        {
+            "responseType": "ephemeral",
+            "text": r.choices[0].message.content
+        }
+    )

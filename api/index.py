@@ -161,12 +161,19 @@ def room_busy(room_id: str, start: str, end: str) -> bool:
 def room_options(floor: Optional[int]=None, hint: Optional[str]=None) -> List[Dict[str,str]]:
     rooms = load_rooms()
     if floor:
-        rooms = [r for r in rooms if r.get("floor")==floor]
+        rooms = [r for r in rooms if r.get("floor") == floor]
+
     if hint:
         kw = str(hint)
-        rooms = [r for r in rooms if any(t in kw for t in [r["id"], r["name"]])]
-    rooms.sort(key=lambda x: (x.get("floor",0), x["name"]))
+        # 1) ID 또는 전체 이름이 문장에 포함되는 “정확 매치”만 우선 시도
+        matched = [r for r in rooms if (r["id"] in kw) or (r["name"] in kw)]
+        # 2) 정확 매치가 하나도 없으면 hint는 무시(층 필터만 유지)
+        if matched:
+            rooms = matched
+
+    rooms.sort(key=lambda x: (x.get("floor", 0), x["name"]))
     return [{"text": f'{r["name"]} ({r["id"]})', "value": r["id"]} for r in rooms]
+
 
 def time_options(pref: Optional[str]=None) -> List[Dict[str,str]]:
     slots = []

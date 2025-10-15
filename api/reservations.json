@@ -9,33 +9,6 @@
     "reservedBy": "user_alice"
   },
   {
-    "id": "RV-EX-002",
-    "date": "2025-10-15",
-    "roomId": "R302",
-    "start": "10:30",
-    "end": "12:00",
-    "title": "3층 소회의실 A - 디자인 리뷰",
-    "reservedBy": "user_bob"
-  },
-  {
-    "id": "RV-EX-003",
-    "date": "2025-10-15",
-    "roomId": "R303",
-    "start": "14:00",
-    "end": "15:30",
-    "title": "3층 소회의실 B - 고객 미팅",
-    "reservedBy": "user_charlie"
-  },
-  {
-    "id": "RV-EX-004",
-    "date": "2025-10-15",
-    "roomId": "R401",
-    "start": "13:00",
-    "end": "14:00",
-    "title": "4층 라운지룸 - 내부 워크숍",
-    "reservedBy": "user_dana"
-  },
-  {
     "id": "RV-EX-005",
     "date": "2025-10-15",
     "roomId": "R402",
